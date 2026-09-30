@@ -1,6 +1,6 @@
 // Estrutura: Lista simplesmente encadeada
 // Justificativa: Mantém a ordem de chegada e dá prioridade para idosos (>60 anos),
-// inserindo-os no início da fila sem perder a eficiência da estrutura leve.
+// preservando FIFO dentro de cada grupo de prioridade.
 
 class Paciente {
     String nome;
@@ -21,17 +21,15 @@ class FilaPrioritaria {
 
     public void inserir(String nome, int idade, int senha) {
         Paciente novo = new Paciente(nome, idade, senha);
-        if (inicio == null || idade > 60) {
-            novo.proximo = inicio;
-            inicio = novo;
-        } else {
-            Paciente atual = inicio;
-            while (atual.proximo != null && atual.proximo.idade > 60) {
-                atual = atual.proximo;
-            }
-            novo.proximo = atual.proximo;
-            atual.proximo = novo;
+        Paciente anterior = null;
+        Paciente atual = inicio;
+        while (atual != null && (idade <= 60 || atual.idade > 60)) {
+            anterior = atual;
+            atual = atual.proximo;
         }
+        novo.proximo = atual;
+        if (anterior == null) inicio = novo;
+        else anterior.proximo = novo;
     }
 
     public void chamarProximo() {

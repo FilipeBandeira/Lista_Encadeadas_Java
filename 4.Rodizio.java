@@ -35,6 +35,9 @@ class Rodizio {
         if (atual == null) return;
 
         Jogador anterior = atual;
+        while (anterior.proximo != atual) {
+            anterior = anterior.proximo;
+        }
         Jogador atualJogador = atual;
 
         do {
